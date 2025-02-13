@@ -124,14 +124,62 @@ def update_sales():
 
 
 def find_by_author():
-    pass
+    print("Finding books by an author...")
+    author_to_find = input("Name of the author: ").title()
+
+    try:
+        with open("books_record.csv", "r") as file:
+            lines = file.readlines()
+
+        found_books = []
+        for line in lines:
+            data = line.strip().split(",")
+            if author_to_find == data[0]:
+                found_books.append(data[1])
+
+        if found_books:
+            print(f"Books by '{author_to_find}':")
+            for book in found_books:
+                print(f"- {book}")
+        else:
+            print(f"No books found by '{author_to_find}'.")
+
+    except IOError as e:
+        print(f"Error: {e}")
+
+    finally:
+        display_menu()
 
 def oldest_book():
-    pass
+    try:
+        with open("books_record.csv", "r") as file:
+            lines = file.readlines()
+            years = []
+            oldest_book_list = []
+
+            for line in lines:
+                data = line.strip().split(",")
+                years.append(int(data[2]))
+
+            for line in lines:
+                data = line.strip().split(",")
+                if int(data[2]) == min(years):
+                    oldest_book_list.append(data[1])
+        if len(oldest_book_list) == 1:
+            print(f"The oldest book is '{oldest_book_list[0]}'.")
+        else:
+            print("The oldest books are:")
+            for book in oldest_book_list:
+                print(f"- {book}")
+
+    except FileNotFoundError:
+        print("Error: File not found!")
+
+    finally:
+        display_menu()
 
 def main():
     display_menu()
-
 
 if __name__ == "__main__":
     main()
